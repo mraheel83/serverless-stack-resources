@@ -1,0 +1,42 @@
+service:  alaqari-app-database
+
+provider:
+  name: aws
+  stage: dev
+  region: eu-west-1
+
+custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or fallsback to what we have set in the provider section.
+  stage:     ${opt:stage, self:provider.stage}
+  region:    ${opt:region, self:provider.region}
+  tableName: ${self:custom.stage}-properties
+
+resources:
+  # DynamoDb properties table.
+  - ${file(./resouces/dynamodb-table-properties.yml):Resources}
+
+Outputs:
+  PropertiesTableArn:
+    Value:
+      Fn::GetAtt:
+        - self:resources.PropertiesTable
+        - Arn
+    Export:
+      Name: ${self:custom.stage}-PropertiesTableArn
+
+environment:
+  tableName: ${self:custom.tableName}
+
+iamRoleStatements:
+  - Effect: 'Allow'
+    Action:
+      - 'Dynamodb:DescribeTable'
+      - 'Dynamodb:Query'
+      - 'Dynamodb:Scan'
+      - 'Dynamodb:GetItem'
+      - 'Dynamodb:PutItem'
+      - 'Dynamodb:UpdateItem'
+      - 'Dynamodb:DeleteItem'
+    Resource:
+      - Fn::GetAtt: [ PropertiesTable, Arn ]
