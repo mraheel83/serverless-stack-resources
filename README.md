@@ -10,7 +10,7 @@ $ npm install serverless -g
 
 Clone this repo.
 ``` bash
-$ git clone https://github.com/alaqari/serverless-stack-alaqari-resources
+$ git clone https://github.com/mraheel83/serverless-stack-resources.git
 ```
 
 Go to one of the services in the `service` directory and run this to deploy to AWS account.
@@ -22,5 +22,3 @@ If you would like to remove the specific resources stack then Go to one of the s
 ``` bash
 $ serverless remove -v
 ```
-
-Once you deploy the resources in this repo, head over to [Serverless Stack Extended Backend API](https://github.com/alaqari/serverless-stack-alaqari-api) to deploy your API services.
